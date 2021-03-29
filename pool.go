@@ -22,6 +22,8 @@ type Pool interface {
 	// be counted as an error.
 	Get() (Conn, error)
 
+	Put(conn Conn) error
+
 	// Close closes the pool and all its connections. After Close() the pool is
 	// no longer usable.
 	Close()

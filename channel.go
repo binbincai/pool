@@ -85,9 +85,9 @@ func (c *channelPool) Get() (Conn, error) {
 	}
 }
 
-// put puts the connection back to the pool. If the pool is full or closed,
+// Put puts the connection back to the pool. If the pool is full or closed,
 // conn is simply closed. A nil conn will be rejected.
-func (c *channelPool) put(conn Conn) error {
+func (c *channelPool) Put(conn Conn) error {
 	if conn == nil {
 		return errors.New("connection is nil. rejecting")
 	}
@@ -100,7 +100,7 @@ func (c *channelPool) put(conn Conn) error {
 		return conn.Close()
 	}
 
-	// put the resource back into the pool. If the pool is full, this will
+	// Put the resource back into the pool. If the pool is full, this will
 	// block and the default case will be executed.
 	select {
 	case c.conns <- conn:
