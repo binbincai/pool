@@ -3,7 +3,6 @@ package pool
 
 import (
 	"errors"
-	"net"
 )
 
 var (
@@ -11,13 +10,17 @@ var (
 	ErrClosed = errors.New("pool is closed")
 )
 
+type Conn interface {
+	Close() error
+}
+
 // Pool interface describes a pool implementation. A pool should have maximum
 // capacity. An ideal pool is threadsafe and easy to use.
 type Pool interface {
 	// Get returns a new connection from the pool. Closing the connections puts
 	// it back to the Pool. Closing it when the pool is destroyed or full will
 	// be counted as an error.
-	Get() (net.Conn, error)
+	Get() (Conn, error)
 
 	// Close closes the pool and all its connections. After Close() the pool is
 	// no longer usable.
